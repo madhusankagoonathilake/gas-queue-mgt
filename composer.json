@@ -1,0 +1,19 @@
+{
+  "name": "madhusankagoonathilake/gas-queue-mgt",
+  "description": "Queue Management Systems for LPG vendor agencies of Sri Lanka, for the LPG shortages in 2022",
+  "type": "project",
+  "license": "GNU GPL v3",
+  "authors": [
+    {
+      "name": "Madhusanka Goonathilake",
+      "email": "madhusanka.goonathilake@gmail.com"
+    }
+  ],
+  "minimum-stability": "beta",
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "GasQueueMgt\\": "src/GasQueueMgt/"
+    }
+  }
+}
