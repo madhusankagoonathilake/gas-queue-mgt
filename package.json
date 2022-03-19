@@ -6,5 +6,8 @@
   "repository": "https://github.com/madhusankagoonathilake/gas-queue-mgt.git",
   "author": "Madhusanka Goonathilake <madhusanka.goonathilake@gmail.com>",
   "license": "GNU GPL v3",
-  "private": false
+  "private": false,
+  "dependencies": {
+    "bootstrap": "^5.1.3"
+  }
 }

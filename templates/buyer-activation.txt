@@ -1,0 +1,1 @@
+Obage liyapadinchiya thahavuru kireemata mema ankaya aethulath karanna: ${buyerActivationOTP}
