@@ -73,7 +73,7 @@ include_once '../templates/header.php';
                     <label for="buyerActivationOTP" class="my-1">කේතය</label>
                     <input type="text" maxlength="6" minlength="6" pattern="^\d{6}$"
                            class="form-control text-center" id="buyerActivationOTP" name="buyerActivationOTP"
-                           placeholder="XXXXXX">
+                           placeholder="XXXXXX" autocomplete="off">
                 </div>
             </div>
 

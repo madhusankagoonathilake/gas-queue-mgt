@@ -25,7 +25,7 @@ include_once '../common/agency-list.php';
             <div class="col">
                 <label for="agency" class="my-1">ආයතනය</label>
                 <input type="search" id="agency" required list="agencyList" class="form-control text-center"
-                       placeholder="ඔබට අවශ්‍ය වෙළඳ ආයතනය තෝරන්න" name="agency">
+                       placeholder="ඔබට අවශ්‍ය වෙළඳ ආයතනය තෝරන්න" name="agency" autocomplete="off" lang="en-US">
             </div>
         </div>
 
