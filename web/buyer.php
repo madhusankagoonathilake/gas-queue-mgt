@@ -14,6 +14,9 @@ include_once '../common/agency-list.php';
     <p class="lead">&nbsp;</p>
     <p class="lead">
         <strong>පියවර</strong>
+        <br />
+        <small class="text-white-50">ඔබට එක වරකට ඇතුලත් විය හැක්කේ එක විකිණුම් පොලක පොරොත්තු ලයිස්තුවකට පමණි. තහවුරු කිරීමෙන්
+            පසු එය වෙනස් කළ නොහැක. එනිසා නිවැරදි ආයතනය තෝරාගන්න.</small>
     </p>
     <form class="lead" method="post" action="buyer-activation.php">
         <input type="hidden" name="csrfToken" value="<?php echo $csrfToken; ?>">
@@ -28,7 +31,7 @@ include_once '../common/agency-list.php';
 
         <div class="row">
             <div class="col">
-                <label for="telephone" class="my-1">දුරකථනය</label>
+                <label for="telephone" class="my-1">ඔබේ ජංගම දුරකථන අංකය</label>
                 <input type="tel" maxlength="10" minlength="10" pattern="^07[01245678]\d{7}$"
                        class="form-control text-center" id="telephone" name="telephone"
                        placeholder="07XXXXXXXX">
