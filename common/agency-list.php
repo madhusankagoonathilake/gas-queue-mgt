@@ -2,7 +2,7 @@
 
 require_once '../common/dbh.php';
 
-$stmt = $dbh->prepare("SELECT id, name, city FROM agency;");
+$stmt = getDbh()->prepare("SELECT id, name, city FROM agency;");
 $stmt->execute();
 $result = $stmt->fetchAll(\PDO::FETCH_CLASS);
 
