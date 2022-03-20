@@ -3,6 +3,9 @@
 session_start();
 
 include_once '../common/security.php';
+include_once '../common/session.php';
+include_once '../common/buyer.php';
+include_once '../common/sms.php';
 
 if (!isPostRequest()) {
     echo "Invalid access";
@@ -10,35 +13,32 @@ if (!isPostRequest()) {
 }
 
 $csrfToken = filter_input(INPUT_POST, 'csrfToken', FILTER_SANITIZE_STRING);
+$agency = filter_input(INPUT_POST, 'agency', FILTER_SANITIZE_STRING);
+$telephone = filter_input(INPUT_POST, 'telephone', FILTER_SANITIZE_STRING);
+
 if (!isCsrfTokenValid($csrfToken)) {
     echo "CSRF attack";
     exit(1);
 }
 
-$agency = filter_input(INPUT_POST, 'agency', FILTER_SANITIZE_STRING);
-$telephone = filter_input(INPUT_POST, 'telephone', FILTER_SANITIZE_STRING);
-
-// Check if already in a queue
-require_once '../common/dbh.php';
-$stmt = $dbh->prepare("SELECT IF(COUNT(*) > 0, 'Yes', 'No') FROM customers WHERE telephone = ?;");
-$stmt->execute([$telephone]);
-$isAlreadyInAQueue = ($stmt->fetch(\PDO::FETCH_COLUMN) === 'Yes');
+$isAlreadyInAQueue = isAlreadyInAQueue($telephone);
 
 if (!$isAlreadyInAQueue) {
-    $buyerActivationOTP = str_shuffle(rand(100000, 999999));
+    $buyerActivationOTP = generateBuyerActivationOTP();
 
-    $_SESSION['agency'] = $agency;
-    $_SESSION['telephone'] = $telephone;
-    $_SESSION['buyerActivationOTP'] = $buyerActivationOTP;
-    $_SESSION['buyerActivationAttempts'] = 0;
+    setSessionValues([
+        'agency' => $agency,
+        'telephone' => $telephone,
+        'buyerActivationOTP' => $buyerActivationOTP,
+        'buyerActivationAttempts' => 0,
+    ]);
 
-        include_once '../common/sms.php';
+    $buyerActivationMessage = prepareBuyerActivationMessage($buyerActivationOTP);
+    try {
+        sendSMS($telephone, $buyerActivationMessage);
+    } catch (\Exception $e) {
 
-    $replacements = ['${buyerActivationOTP}' => $buyerActivationOTP];
-    $messageTemplate = file_get_contents('../templates/buyer-activation.txt');
-    $buyerActivationMessage = str_replace(array_keys($replacements), array_values($replacements), $messageTemplate);
-
-    send_sms($telephone, $buyerActivationMessage);
+    }
 }
 
 include_once '../templates/header.php';
@@ -63,7 +63,9 @@ include_once '../templates/header.php';
             </div>
         <?php else: ?>
             <div class="row my-2">
-                <div class="col">ඔබ <?php echo htmlspecialchars($agency, ENT_COMPAT); ?>හි පොරොත්තු ලයිස්තුවට ඇතුළත් වීමට ඉල්ලුම් කර ඇත.</div>
+                <div class="col">ඔබ <?php echo htmlspecialchars($agency, ENT_COMPAT); ?>හි පොරොත්තු ලයිස්තුවට ඇතුළත්
+                    වීමට ඉල්ලුම් කර ඇත.
+                </div>
             </div>
 
             <div class="row">

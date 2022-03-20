@@ -3,7 +3,7 @@
 session_start();
 
 require_once '../common/security.php';
-require_once '../common/dbh.php';
+require_once '../common/session.php';
 
 if (!isPostRequest()) {
     echo "Invalid access";
@@ -17,50 +17,41 @@ if (isCsrfTokenValid($csrfToken)) {
 }
 
 $buyerActivationOTP = filter_input(INPUT_POST, 'buyerActivationOTP');
-$isBuyerActivationOTPValid = $_SESSION['buyerActivationOTP'] == $buyerActivationOTP;
-$_SESSION['buyerActivationAttempts']++;
-
+try {
+    incrementSessionValue('buyerActivationAttempts');
+} catch (\Exception $e) {
+    echo "Error getting session values. Exiting...";
+    exit(1);
+}
 $positionedAt = null;
 $isActivationSuccessful = false;
-$agency = $_SESSION['agency'];
 
-if ($isBuyerActivationOTPValid) {
+try {
+    $agency = getSessionValue('agency');
+    $telephone = getSessionValue('telephone');
+    $buyerActivationAttempts = getSessionValue('buyerActivationAttempts');
+} catch (\Exception $e) {
+    echo "Error getting session values. Exiting...";
+    exit(1);
+}
 
-    $stmt = $dbh->prepare("SELECT id, queue FROM agency WHERE name = ? AND city = ?");
-    $stmt->execute(explode(' - ', $_SESSION['agency']));
-    list($agencyId, $queueJson) = $stmt->fetch(\PDO::FETCH_NUM);
-
-    $queue = empty($queueJson) ? [] : json_decode($queueJson, true);
-
-    $queueOTP = bin2hex(random_bytes(4));
-
-    $queue[$_SESSION['telephone']] = [$queueOTP, null];
+if (isBuyerActivationOTPValid($buyerActivationOTP)) {
 
     try {
-        $dbh->beginTransaction();
-        $insertStmt = $dbh->prepare("INSERT INTO customers VALUES (?)");
-        $insertStmt->execute([$_SESSION['telephone']]);
+        $positionedAt = addBuyerToQueue($telephone, $agency);
 
-        $updateStmt = $dbh->prepare("UPDATE agency SET queue = ? WHERE id = ? ;");
-        $updateStmt->execute([
-            json_encode($queue),
-            $agencyId,
+        setSessionValues([
+            'agency' => null,
+            'telephone' => null,
+            'csrfToken' => null,
+            'buyerActivationAttempts' => null,
+            'buyerActivationOTP' => null,
         ]);
-
-        $dbh->commit();
-
-        $positionedAt = count($queue);
-
-        $_SESSION['agency'] = null;
-        $_SESSION['telephone'] = null;
-        $_SESSION['csrfToken'] = null;
-        $_SESSION['buyerActivationAttempts'] = null;
-        $_SESSION['buyerActivationOTP'] = null;
 
         $isActivationSuccessful = true;
 
     } catch (\Exception $e) {
-        $dbh->rollBack();
+        // TODO: Differentiate the error message display based on the scenario
     }
 }
 
@@ -80,7 +71,7 @@ include_once '../templates/header.php';
                     ඔබගේ අවස්ථාව එළඹි විට SMS පණිවිඩයක් මගින් දැනුවත් කෙරෙනු ඇත.
                 </div>
             </div>
-        <?php elseif ($_SESSION['buyerActivationAttempts'] >= CONFIG['app']['maxActivationAttempts']): ?>
+        <?php elseif ($buyerActivationAttempts >= CONFIG['app']['maxActivationAttempts']): ?>
             <div class="row my-2 alert bg-danger">
                 <div class="col">කණගාටුයි! ඔබව <?php echo htmlspecialchars($agency, ENT_COMPAT); ?>හි
                     පොරොත්තු ලයිස්තුවට ඇතුළත් කිරීම සාර්ථක නොවුනි. කරුණාකර විනාඩි 30කින් පසු නැවත උත්සාහ කරන්න.

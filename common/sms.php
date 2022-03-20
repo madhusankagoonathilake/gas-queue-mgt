@@ -5,7 +5,7 @@ require_once '../vendor/autoload.php';
 
 use GuzzleHttp\Client;
 
-function send_sms($to, $text): bool
+function sendSMS($to, $text): bool
 {
     $client = new Client(['base_uri' => CONFIG['sms']['baseUri'], 'timeout' => 2.0]);
     $response = $client->request('POST', '/api/v1/send', [
