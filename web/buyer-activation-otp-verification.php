@@ -4,6 +4,7 @@ session_start();
 
 require_once '../common/security.php';
 require_once '../common/session.php';
+require_once '../common/buyer.php';
 
 if (!isPostRequest()) {
     echo "Invalid access";
@@ -11,7 +12,7 @@ if (!isPostRequest()) {
 }
 
 $csrfToken = filter_input(INPUT_POST, 'csrfToken');
-if (isCsrfTokenValid($csrfToken)) {
+if (!isCsrfTokenValid($csrfToken)) {
     echo "CSRF attack";
     exit(1);
 }
