@@ -56,7 +56,7 @@ function addBuyerToQueue(string $telephone, string $agency): int
 
         $dbh->beginTransaction();
         $insertStmt = $dbh->prepare("INSERT INTO customers VALUES (?)");
-        $insertStmt->execute($telephone);
+        $insertStmt->execute([$telephone]);
 
         $updateStmt = $dbh->prepare("UPDATE agency SET queue = ? WHERE id = ? ;");
         $updateStmt->execute([
