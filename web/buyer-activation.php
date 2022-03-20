@@ -21,26 +21,29 @@ if (!isCsrfTokenValid($csrfToken)) {
     exit(1);
 }
 
-$isAlreadyInAQueue = isAlreadyInAQueue($telephone);
+$agencyExists = agencyExists($agency);
+if ($agencyExists) {
 
-if (!$isAlreadyInAQueue) {
-    $buyerActivationOTP = generateBuyerActivationOTP();
+    $isAlreadyInAQueue = isAlreadyInAQueue($telephone);
 
-    setSessionValues([
-        'agency' => $agency,
-        'telephone' => $telephone,
-        'buyerActivationOTP' => $buyerActivationOTP,
-        'buyerActivationAttempts' => 0,
-    ]);
+    if (!$isAlreadyInAQueue) {
+        $buyerActivationOTP = generateBuyerActivationOTP();
 
-    $buyerActivationMessage = prepareBuyerActivationMessage($buyerActivationOTP);
-    try {
-        sendSMS($telephone, $buyerActivationMessage);
-    } catch (\Exception $e) {
+        setSessionValues([
+            'agency' => $agency,
+            'telephone' => $telephone,
+            'buyerActivationOTP' => $buyerActivationOTP,
+            'buyerActivationAttempts' => 0,
+        ]);
 
+        $buyerActivationMessage = prepareBuyerActivationMessage($buyerActivationOTP);
+        try {
+            sendSMS($telephone, $buyerActivationMessage);
+        } catch (\Exception $e) {
+
+        }
     }
 }
-
 include_once '../templates/header.php';
 ?>
 <main class="px-3 py-3 mt-5 ">
@@ -52,7 +55,16 @@ include_once '../templates/header.php';
     <form class="lead" method="post" action="buyer-activation-otp-verification.php">
         <input type="hidden" name="csrfToken" value="<?php echo $csrfToken; ?>">
 
-        <?php if ($isAlreadyInAQueue): ?>
+        <?php if (!$agencyExists): ?>
+            <div class="row my-2 alert bg-danger">
+                <div class="col">ඔබ සඳහන් කළ ආයතනය මේ සේවා සමඟ ලියාපදිංචි වී නැත!</div>
+            </div>
+            <div class="row my-4">
+                <div class="col-sm-12">
+                    <a href="/" class="btn btn-link">ආපසු</a>
+                </div>
+            </div>
+        <?php elseif ($isAlreadyInAQueue): ?>
             <div class="row my-2 alert bg-warning text-dark">
                 <div class="col">ඔබ දැනටමත් පොරොත්තු ලයිස්තුවකට ඇතුළත් වී ඇත.</div>
             </div>

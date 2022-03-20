@@ -2,6 +2,7 @@
 
 require_once '../common/dbh.php';
 require_once '../common/session.php';
+require_once '../common/agency.php';
 
 function isAlreadyInAQueue($telephone): bool
 {
@@ -46,11 +47,7 @@ function addBuyerToQueue(string $telephone, string $agency): int
 {
     $dbh = getDbh();
     try {
-        $stmt = $dbh->prepare("SELECT id, queue FROM agency WHERE name = ? AND city = ?");
-        $stmt->execute(explode(' - ', $agency));
-        list($agencyId, $queueJson) = $stmt->fetch(\PDO::FETCH_NUM);
-
-        $queue = empty($queueJson) ? [] : json_decode($queueJson, true);
+        list($agencyId, $queue) = findAgencyDetailsByDisplayName($agency);
 
         $queue[$telephone] = [generateQueueOTP(), null];
 
