@@ -2,18 +2,16 @@
 
 session_start();
 
+require_once '../common/security.php';
 require_once '../common/dbh.php';
 
-$requestMethod = filter_input(INPUT_SERVER, 'REQUEST_METHOD');
-
-if ($requestMethod !== 'POST') {
+if (!isPostRequest()) {
     echo "Invalid access";
     exit(1);
 }
 
 $csrfToken = filter_input(INPUT_POST, 'csrfToken');
-
-if ($csrfToken !== $_SESSION['csrfToken']) {
+if (isCsrfTokenValid($csrfToken)) {
     echo "CSRF attack";
     exit(1);
 }

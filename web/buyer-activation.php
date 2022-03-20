@@ -2,16 +2,15 @@
 
 session_start();
 
-$requestMethod = filter_input(INPUT_SERVER, 'REQUEST_METHOD');
+include_once '../common/security.php';
 
-if ($requestMethod !== 'POST') {
+if (!isPostRequest()) {
     echo "Invalid access";
     exit(1);
 }
 
 $csrfToken = filter_input(INPUT_POST, 'csrfToken', FILTER_SANITIZE_STRING);
-
-if ($csrfToken !== $_SESSION['csrfToken']) {
+if (!isCsrfTokenValid($csrfToken)) {
     echo "CSRF attack";
     exit(1);
 }

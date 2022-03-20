@@ -2,13 +2,9 @@
 
 session_start();
 
-try {
-    $csrfToken = bin2hex(random_bytes(20));
-} catch (\Exception $e) {
-    $csrfToken = uniqid('_csrfToken');
-}
+include_once '../common/security.php';
 
-$_SESSION['csrfToken'] = $csrfToken;
+$csrfToken = generateCsrfToken();
 
 include_once '../templates/header.php';
 include_once '../common/agency-list.php';
