@@ -7,13 +7,13 @@ const CONFIG = [
     'db' => [
         'host' => 'localhost',
         'port' => 3306,
-        'database' => 'guidelk_pl_gqm',
-        'username' => 'guidelk_gqm',
-        'password' => 'JurLmTxLtXyd',
+        'database' => 'gqm',
+        'username' => 'gqm',
+        'password' => 'secret',
     ],
     'sms' => [
         'mask' => 'FastSMS',
         'baseUri' => 'https://fastsms.lk',
-        'apiKey' => 'BvkZdrHoJ0FSMHRnHdNa',
+        'apiKey' => '1234',
     ],
 ];
