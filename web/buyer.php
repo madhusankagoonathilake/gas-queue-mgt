@@ -16,7 +16,7 @@ include_once '../common/agency-list.php';
         <strong>පියවර</strong>
         <br />
         <small class="text-white-50">ඔබට එක වරකට ඇතුලත් විය හැක්කේ එක විකිණුම් පොලක පොරොත්තු ලයිස්තුවකට පමණි. තහවුරු කිරීමෙන්
-            පසු එය වෙනස් කළ නොහැක. එනිසා නිවැරදි ආයතනය තෝරාගන්න.</small>
+            පසු එය වෙනස් කළ නොහැක. එනිසා ඔබ අයත් නගරයේ නිවැරදි වෙළඳ ආයතනය තෝරාගන්න.</small>
     </p>
     <form class="lead" method="post" action="buyer-activation.php">
         <input type="hidden" name="csrfToken" value="<?php echo $csrfToken; ?>">
