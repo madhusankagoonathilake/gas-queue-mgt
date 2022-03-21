@@ -22,6 +22,8 @@ if (!isCsrfTokenValid($csrfToken)) {
 }
 
 $agencyExists = agencyExists($agency);
+$success = false;
+
 if ($agencyExists) {
 
     $isAlreadyInAQueue = isAlreadyInAQueue($telephone);
@@ -39,8 +41,9 @@ if ($agencyExists) {
         $buyerActivationMessage = prepareBuyerActivationMessage($buyerActivationOTP);
         try {
             sendSMS($telephone, $buyerActivationMessage);
+            $success = true;
         } catch (\Exception $e) {
-
+            // TODO: Log errors
         }
     }
 }
@@ -67,6 +70,17 @@ include_once '../templates/header.php';
         <?php elseif ($isAlreadyInAQueue): ?>
             <div class="row my-2 alert bg-warning text-dark">
                 <div class="col">ඔබ දැනටමත් පොරොත්තු ලයිස්තුවකට ඇතුළත් වී ඇත.</div>
+            </div>
+            <div class="row my-4">
+                <div class="col-sm-12">
+                    <a href="/" class="btn btn-link">ආපසු</a>
+                </div>
+            </div>
+        <?php elseif (!$success): ?>
+            <div class="row my-2 alert bg-warning text-dark">
+                <div class="col">කණගාටුයි! පද්ධතියේ දෝෂයක් හේතුවෙන් මෙම අවස්ථාවේදී ඔබව මෙම ආයතනයේ පොරොත්තු ලයිස්තුවට
+                    ඇතුළත් කරගත නොහැක. අප මෙය නිවරද කිරීමට ඉක්මනින් කටයුතු කරන්නෙමු.
+                </div>
             </div>
             <div class="row my-4">
                 <div class="col-sm-12">
