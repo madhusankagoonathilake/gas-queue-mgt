@@ -4,7 +4,7 @@
     ඔබේ පුද්ගලික තොරතුරු (දුරකථන අංකය) මෙම පද්ධය්තියෙන් පිටත කිසිඳු කටයුත්තක් සඳහා ලබා දීමක් හෝ ඔබ ගෑස් සිලින්ඩරය
     මිලදී ගැනීමෙන් පසු පද්ධතිය තුළ රඳවා තබාගැනීමක් හෝ සිදු කෙරෙන්නේ නැත. (<a href="privacy.php">වැඩිදුර තොරතුරු</a>).
     මෙය
-    <a href="https://github.com/madhusankagoonathilake/gas-queue-mgt">නිදහස් හා විවෘත (Free &amp; Open Source)
+    <a href="https://github.com/madhusankagoonathilake/gas-queue-mgt" target="_blank">නිදහස් හා විවෘත (Free &amp; Open Source)
         මෘදුකාංගයකි</a>.
 </footer>
 </div>
