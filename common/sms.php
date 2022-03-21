@@ -25,7 +25,7 @@ function sendSMS($to, $text): bool
     $result = json_decode($response->getBody());
 
     if ($result->error) {
-        throw new \Exception(print_r($result));
+        throw new \Exception($result->message, $result->code);
     }
 
     return true;
