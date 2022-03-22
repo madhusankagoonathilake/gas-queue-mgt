@@ -1,1 +1,1 @@
-Obe waraya paemina aetha. Miladeegannawita mema kethaya idiripath karanna: ${queueOTP} (Avasthaawa dina 3 kata pamanak walanguyi)
+Gas labagaeneemata ${agencyName} wetha gos mema murapadaya idiripath karanna: ${queueOTP} (Dina 3kata walanguyi)
