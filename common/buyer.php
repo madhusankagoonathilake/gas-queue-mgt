@@ -6,7 +6,7 @@ require_once '../common/agency.php';
 
 function isAlreadyInAQueue($telephone): bool
 {
-    $stmt = getDbh()->prepare("SELECT IF(COUNT(*) > 0, 'Yes', 'No') FROM customers WHERE telephone = ?;");
+    $stmt = getDbh()->prepare("SELECT IF(COUNT(*) > 0, 'Yes', 'No') FROM active_buyer_list WHERE telephone = ?;");
     $stmt->execute([$telephone]);
     return ($stmt->fetch(\PDO::FETCH_COLUMN) === 'Yes');
 }
@@ -52,7 +52,7 @@ function addBuyerToQueue(string $telephone, string $agency): int
         $queue[$telephone] = [generateQueueOTP(), null];
 
         $dbh->beginTransaction();
-        $insertStmt = $dbh->prepare("INSERT INTO customers VALUES (?)");
+        $insertStmt = $dbh->prepare("INSERT INTO active_buyer_list VALUES (?)");
         $insertStmt->execute([$telephone]);
 
         $updateStmt = $dbh->prepare("UPDATE agency SET queue = ? WHERE id = ? ;");
