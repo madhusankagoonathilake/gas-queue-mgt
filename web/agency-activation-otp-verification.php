@@ -24,7 +24,7 @@ try {
     echo "Error getting session values. Exiting...";
     exit(1);
 }
-$positionedAt = null;
+
 $isActivationSuccessful = false;
 
 try {
