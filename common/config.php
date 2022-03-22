@@ -3,6 +3,7 @@
 const CONFIG = [
     'app' => [
         'maxActivationAttempts' => 3,
+        'maxLoginAttempts' => 3,
     ],
     'db' => [
         'host' => 'localhost',
