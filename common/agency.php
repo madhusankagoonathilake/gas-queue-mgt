@@ -32,3 +32,41 @@ function agencyExists($displayName): bool
         return false;
     }
 }
+
+function isTelephoneNumberInUse($telephone): bool
+{
+    $stmt = getDbh()->prepare("SELECT IF(COUNT(*) = 1, 'Yes', 'No') FROM agency WHERE telephone = ?");
+    $stmt->execute([$telephone]);
+    return ($stmt->fetchColumn() === 'Yes');
+}
+
+function generateAgencyActivationOTP(): string
+{
+    return str_shuffle(rand(100000, 999999));
+}
+
+function prepareAgencyActivationMessage($agencyActivationOTP): string
+{
+    $replacements = ['${agencyActivationOTP}' => $agencyActivationOTP];
+    $messageTemplate = file_get_contents('../templates/agency-activation.txt');
+    return str_replace(array_keys($replacements), array_values($replacements), $messageTemplate);
+}
+
+function isAgencyActivationOTPValid($agencyActivationOTP): bool
+{
+    try {
+        return (getSessionValue('agency-activationOTP') == $agencyActivationOTP);
+    } catch (\Exception $e) {
+        return false;
+    }
+}
+
+function addAgency($name, $city, $telephone): void
+{
+    try {
+        $insertStmt = getDbh()->prepare("INSERT INTO agency (name, city, telephone, queue) VALUES (?, ?, ?, '[]')");
+        $insertStmt->execute([$name, $city, $telephone]);
+    } catch (\Exception $e) {
+        throw new \Exception("Failed to add agency {$name}.");
+    }
+}
