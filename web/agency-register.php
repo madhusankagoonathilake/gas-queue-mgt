@@ -21,8 +21,8 @@ include_once '../common/city-list.php';
 
         <div class="row">
             <div class="col">
-                <label for="name" class="my-1">ආයතනයේ නම</label>
-                <input type="text" id="name" class="form-control text-center"
+                <label for="name" class="my-1">ආයතනයේ නම <span class="text-white-50">(ඉංග්‍රීසියෙන්)</span></label>
+                <input type="text" id="name" class="form-control text-center" required maxlength="60" minlength="4"
                        placeholder="උදාහරණ: : Giripura Trade Center" name="name" lang="en-US" autocomplete="off">
             </div>
         </div>
@@ -31,7 +31,7 @@ include_once '../common/city-list.php';
             <div class="col">
                 <label for="city" class="my-1">නගරය</label>
                 <input type="search" class="form-control text-center" id="city" name="city"
-                       placeholder="නගරය තෝරන්න" list="cityList" required autocomplete="off">
+                       placeholder="නගරය තෝරන්න" list="cityList" required maxlength="60" minlength="4" autocomplete="off">
             </div>
 
         </div>
