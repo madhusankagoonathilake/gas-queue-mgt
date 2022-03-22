@@ -21,5 +21,7 @@ Queue Management Systems for LPG vendor agencies of Sri Lanka, for the LPG short
 3. Run the installation script. Enter necessary details when prompted.<br>
 `php install.php`
 
-## Future Improvements
-TBD
+## (Near) Future Improvements
+* Limit the queue for a configurable number of slots
+* Reduce session timeout from the default PHP value
+* Remove IP & session level restriction to malicious activity
