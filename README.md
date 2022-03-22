@@ -1,2 +1,25 @@
 # gas-queue-mgt
 Queue Management Systems for LPG vendor agencies of Sri Lanka, for the LPG shortages in 2022 
+
+## Installation
+
+### Requirements
+* PHP 7.4 or later
+* MariaDB 10.4 or later
+
+### SMS Gateway
+* By default, the system uses [FastSMS (Sri Lanka)](https://fastsms.lk/) service.
+* If the service needs to be changed, `sendSMS()` function in `common/sms.php` needs to be changed.
+* The configuration parameters in `common/config.php` needs to be changed accordingly.
+
+
+### Steps
+1. Clone code from GitHub<br>
+`git clone https://github.com/madhusankagoonathilake/gas-queue-mgt.git`
+2. Move to the installation directory<br>
+`cd gas-queue-mgt/install`
+3. Run the installation script. Enter necessary details when prompted.<br>
+`php install.php`
+
+## Future Improvements
+TBD
