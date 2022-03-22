@@ -20,6 +20,17 @@ function findAgencyDetailsByDisplayName(string $displayName): array
     return [$agencyId, $queue];
 }
 
+function findAgencyDetailsByTelephone(string $telephone): array
+{
+    $stmt = getDbh()->prepare("SELECT id, queue FROM agency WHERE telephone = ?");
+    $stmt->execute([$telephone]);
+    list($agencyId, $queueJson) = $stmt->fetch(\PDO::FETCH_NUM);
+
+    $queue = empty($queueJson) ? [] : json_decode($queueJson, true);
+
+    return [$agencyId, $queue];
+}
+
 function agencyExists($displayName): bool
 {
     $nameParts = explode(' - ', $displayName);
@@ -68,5 +79,26 @@ function addAgency($name, $city, $telephone): void
         $insertStmt->execute([$name, $city, $telephone]);
     } catch (\Exception $e) {
         throw new \Exception("Failed to add agency {$name}.");
+    }
+}
+
+function generateAgencyLoginOTP(): string
+{
+    return str_shuffle(rand(100000, 999999));
+}
+
+function prepareAgencyLoginOTPMessage($agencyLoginOTP): string
+{
+    $replacements = ['${agencyLoginOTP}' => $agencyLoginOTP];
+    $messageTemplate = file_get_contents('../templates/agency-login-otp.txt');
+    return str_replace(array_keys($replacements), array_values($replacements), $messageTemplate);
+}
+
+function isAgencyLoginOTPValid($agencyLoginOTP): bool
+{
+    try {
+        return (getSessionValue('agency-loginOTP') == $agencyLoginOTP);
+    } catch (\Exception $e) {
+        return false;
     }
 }

@@ -7,6 +7,10 @@ include_once '../common/session.php';
 include_once '../common/agency.php';
 include_once '../common/sms.php';
 
+if (isLoggedIn()) {
+    header('Location: /agency-dashboard.php');
+}
+
 if (!isPostRequest()) {
     echo "Invalid access";
     exit(1);

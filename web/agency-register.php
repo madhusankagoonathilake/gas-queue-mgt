@@ -3,6 +3,11 @@
 session_start();
 
 include_once '../common/security.php';
+include_once '../common/session.php';
+
+if (isLoggedIn()) {
+    header('Location: /agency-dashboard.php');
+}
 
 $csrfToken = generateCsrfToken();
 

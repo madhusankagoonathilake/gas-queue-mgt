@@ -33,3 +33,13 @@ function setSessionValues(array $keyValuePair): void
         $_SESSION[$key] = $value;
     }
 }
+
+function isLoggedIn(): bool
+{
+    try {
+        $agencyId = getSessionValue('agency-id');
+        return !empty($agencyId);
+    } catch (\Exception $e) {
+        return false;
+    }
+}

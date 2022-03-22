@@ -6,6 +6,10 @@ require_once '../common/security.php';
 require_once '../common/session.php';
 require_once '../common/agency.php';
 
+if (isLoggedIn()) {
+    header('Location: /agency-dashboard.php');
+}
+
 if (!isPostRequest()) {
     echo "Invalid access";
     exit(1);

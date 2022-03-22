@@ -1,4 +1,15 @@
-<?php include_once '../templates/header.php' ?>
+<?php
+
+session_start();
+
+include_once '../common/session.php';
+
+if (isLoggedIn()) {
+    header('Location: /agency-dashboard.php');
+}
+
+include_once '../templates/header.php';
+?>
 
 <main class="px-3 py-3 mt-5 ">
     <h1>ඒජන්සි හිමිකරු</h1>
