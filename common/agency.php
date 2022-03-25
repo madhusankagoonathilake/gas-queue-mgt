@@ -20,7 +20,7 @@ function findAgencyIdByTelephone(string $telephone): int
 {
     $stmt = getDbh()->prepare("SELECT id FROM agency WHERE telephone = ?");
     $stmt->execute([$telephone]);
-    return  (int) $stmt->fetch(\PDO::FETCH_COLUMN);
+    return (int)$stmt->fetch(\PDO::FETCH_COLUMN);
 }
 
 function agencyExists($displayName): bool
@@ -93,4 +93,102 @@ function isAgencyLoginOTPValid($agencyLoginOTP): bool
     } catch (\Exception $e) {
         return false;
     }
+}
+
+function findAgencyDetailsById($id): array
+{
+    try {
+        $stmt = getDbh()->prepare("SELECT name, city, queue_length, current_batch_size, available_amount, issued_amount FROM agency WHERE id = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetch(\PDO::FETCH_NUM);
+    } catch (\Exception $e) {
+        throw new \Exception("Error while fetching agency details.");
+    }
+
+}
+
+function generateCurrentBatchStatusDonutChart($issuedAmount, $currentBatchSize, $issuedPercentage, $availablePercentage): string
+{
+
+    $text = "{$issuedAmount}/{$currentBatchSize}";
+
+    $hue = $availablePercentage * 1.2;
+    $color = "hsl({$hue},80%,50%)";
+
+    $dimension = 42;
+    $scale = 0.8;
+
+    $textLength = strlen($text);
+    $fontSize = 6 - floor($textLength / 6);
+    $midPoint = round($dimension / 2);
+    $radius = round(pi() * 5, 14); // 15.91549430918954 or closer
+    $textX = round(($dimension / $textLength) + ($scale * $textLength), 4);
+    $textY = round(($dimension / 2) + ($scale * 2), 4);
+
+    $html = file_get_contents('../templates/donut-chart.svg.html');
+
+    $replacements = [
+        '${scalePercentage}' => $scale * 100,
+        '${dimension}' => $dimension,
+        '${midPoint}' => $midPoint,
+        '${radius}' => $radius,
+        '${filledPercentage}' => $issuedPercentage,
+        '${remainingPercentage}' => $availablePercentage,
+        '${text}' => $text,
+        '${fontSize}' => $fontSize,
+        '${textX}' => $textX,
+        '${textY}' => $textY,
+        '${color}' => $color,
+    ];
+
+    return str_replace(array_keys($replacements), array_values($replacements), $html);
+}
+
+function generateQueueGraphic($queueLength, $currentBatchSize, $issuedAmount): string
+{
+
+    $dimension = 42;
+    $scale = 0.8;
+
+    $displayQueueLength = $queueLength;
+    if ($queueLength > 100) {
+        $displayQueueLength = 100;
+        $currentBatchSize = floor(($currentBatchSize / $queueLength) * 100);
+        $issuedAmount = floor(($issuedAmount / $queueLength) * 100);
+    }
+
+    $startX = 4.25;
+    $startY = 6.5;
+    $fontSize = 3.5;
+    $x = $startX;
+    $y = $startY;
+    $tagTemplate = '<text x="${x}" y="${y}" font-size="3.25" fill="${c}">${t}</text>';
+    $tagReplacementStrings = ['${x}', '${y}', '${c}', '${t}'];
+
+    if ($queueLength > 0) {
+        $queue = '';
+
+        $reset = true;
+        for ($i = 1; $i <= $displayQueueLength; $i++) {
+
+            $x = $reset ? $startX : $x + $fontSize;
+            $y = $startY + ($fontSize * (ceil($i / 10) - 1));
+            $c = $currentBatchSize >= $i ? 'orange' : 'gray';
+            $t = $issuedAmount >= $i ? '■' : '□';
+            $queue .= str_replace($tagReplacementStrings, [$x, $y, $c, $t], $tagTemplate);
+
+            $reset = ($i % 10 === 0);
+        }
+    } else {
+        $queue = str_replace($tagReplacementStrings, [$startX - 1.5, $startY, 'gray', 'පොරොත්තු ලයිස්තුව හිස්ය.'], $tagTemplate);
+    }
+
+    $html = file_get_contents('../templates/queue.svg.html');
+    $replacements = [
+        '${scalePercentage}' => $scale * 100,
+        '${dimension}' => $dimension,
+        '${queue}' => $queue,
+    ];
+
+    return str_replace(array_keys($replacements), array_values($replacements), $html);
 }

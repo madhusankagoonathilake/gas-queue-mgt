@@ -1,0 +1,11 @@
+<svg width="${scalePercentage}%" height="${scalePercentage}%" viewBox="0 0 ${dimension} ${dimension}" class="donut">
+    <circle class="donut-hole" cx="${midPoint}" cy="${midPoint}" r="${radius}" fill="transparent"></circle>
+    <circle class="donut-ring" cx="${midPoint}" cy="${midPoint}" r="${radius}" fill="transparent" stroke="#d2d3d4"
+            stroke-width="3"></circle>
+    <circle class="donut-segment" cx="${midPoint}" cy="${midPoint}" r="${radius}" fill="transparent"
+            stroke="${color}" stroke-width="3" stroke-dasharray="${filledPercentage} ${remainingPercentage}"
+            stroke-dashoffset="25"></circle>
+    <text x="${textX}" y="${textY}" font-size="${fontSize}" font-family="monospace" fill="${color}">
+        ${text}
+    </text>
+</svg>
