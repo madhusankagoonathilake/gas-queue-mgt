@@ -6,7 +6,7 @@ require_once '../common/agency.php';
 
 function isAlreadyInAQueue($telephone): bool
 {
-    $stmt = getDbh()->prepare("SELECT IF(COUNT(*) > 0, 'Yes', 'No') FROM active_buyer_list WHERE telephone = ?;");
+    $stmt = getDbh()->prepare("SELECT IF(COUNT(*) > 0, 'Yes', 'No') FROM buyer WHERE telephone = ?;");
     $stmt->execute([$telephone]);
     return ($stmt->fetch(\PDO::FETCH_COLUMN) === 'Yes');
 }
@@ -47,23 +47,18 @@ function addBuyerToQueue(string $telephone, string $agency): int
 {
     $dbh = getDbh();
     try {
-        list($agencyId, $queue) = findAgencyDetailsByDisplayName($agency);
-
-        $queue[$telephone] = [generateQueueOTP(), null];
+        list($agencyId, $queueLength) = findAgencyDetailsByDisplayName($agency);
 
         $dbh->beginTransaction();
-        $insertStmt = $dbh->prepare("INSERT INTO active_buyer_list VALUES (?)");
-        $insertStmt->execute([$telephone]);
+        $insertStmt = $dbh->prepare("INSERT INTO buyer VALUES (?, ?, ?, NULL)");
+        $insertStmt->execute([$telephone, $agencyId, generateQueueOTP()]);
 
-        $updateStmt = $dbh->prepare("UPDATE agency SET queue = ? WHERE id = ? ;");
-        $updateStmt->execute([
-            json_encode($queue),
-            $agencyId,
-        ]);
+        $updateStmt = $dbh->prepare("UPDATE agency SET queue_length = queue_length + 1 WHERE id = ? ;");
+        $updateStmt->execute([$agencyId]);
 
         $dbh->commit();
 
-        return count($queue);
+        return $queueLength + 1;
     } catch (\Exception $e) {
         $dbh->rollBack();
         throw new \Exception("Failed to add {$telephone} to the queue of {$agency}.");

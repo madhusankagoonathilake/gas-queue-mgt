@@ -36,9 +36,7 @@ try {
 }
 
 if (isAgencyLoginOTPValid($agencyLoginOTP)) {
-
-    list($id) = findAgencyDetailsByTelephone($telephone);
-
+    
     try {
         setSessionValues([
             'agency-name' => null,
@@ -46,7 +44,7 @@ if (isAgencyLoginOTPValid($agencyLoginOTP)) {
             'agency-telephone' => null,
             'agency-activationOTP' => null,
             'agency-activationAttempts' => null,
-            'agency-id' => $id,
+            'agency-id' => findAgencyIdByTelephone($telephone),
         ]);
 
         header('Location: /agency-dashboard.php');

@@ -11,6 +11,7 @@
   ],
   "minimum-stability": "beta",
   "require": {
+    "ext-pdo": "*",
     "guzzlehttp/guzzle": "^7.0"
   },
   "autoload": {

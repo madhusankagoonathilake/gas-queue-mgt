@@ -11,24 +11,16 @@ function getAgencyList(): array
 
 function findAgencyDetailsByDisplayName(string $displayName): array
 {
-    $stmt = getDbh()->prepare("SELECT id, queue FROM agency WHERE name = ? AND city = ?");
+    $stmt = getDbh()->prepare("SELECT id, queue_length FROM agency WHERE name = ? AND city = ?");
     $stmt->execute(explode(' - ', $displayName));
-    list($agencyId, $queueJson) = $stmt->fetch(\PDO::FETCH_NUM);
-
-    $queue = empty($queueJson) ? [] : json_decode($queueJson, true);
-
-    return [$agencyId, $queue];
+    return $stmt->fetch(\PDO::FETCH_NUM);
 }
 
-function findAgencyDetailsByTelephone(string $telephone): array
+function findAgencyIdByTelephone(string $telephone): int
 {
-    $stmt = getDbh()->prepare("SELECT id, queue FROM agency WHERE telephone = ?");
+    $stmt = getDbh()->prepare("SELECT id FROM agency WHERE telephone = ?");
     $stmt->execute([$telephone]);
-    list($agencyId, $queueJson) = $stmt->fetch(\PDO::FETCH_NUM);
-
-    $queue = empty($queueJson) ? [] : json_decode($queueJson, true);
-
-    return [$agencyId, $queue];
+    return  (int) $stmt->fetch(\PDO::FETCH_COLUMN);
 }
 
 function agencyExists($displayName): bool
@@ -75,7 +67,7 @@ function isAgencyActivationOTPValid($agencyActivationOTP): bool
 function addAgency($name, $city, $telephone): void
 {
     try {
-        $insertStmt = getDbh()->prepare("INSERT INTO agency (name, city, telephone, queue) VALUES (?, ?, ?, '[]')");
+        $insertStmt = getDbh()->prepare("INSERT INTO agency (name, city, telephone) VALUES (?, ?, ?)");
         $insertStmt->execute([$name, $city, $telephone]);
     } catch (\Exception $e) {
         throw new \Exception("Failed to add agency {$name}.");
