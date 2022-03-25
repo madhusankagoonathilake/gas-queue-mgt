@@ -26,8 +26,9 @@ Queue Management Systems for LPG vendor agencies of Sri Lanka, for the LPG short
 
 ## (Near) Future Improvements
 
+* Tamil translation
 * Agency unregistering
-* Table locking when user entering the queue
+* English translation
 * Limit the queue for a configurable number of slots
 * Reduce session timeout from the default PHP value
 * Implement IP & session level restriction to malicious activity
