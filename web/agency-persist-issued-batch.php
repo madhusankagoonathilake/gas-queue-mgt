@@ -15,7 +15,7 @@ if (!isPostRequest()) {
     exit(1);
 }
 
-$csrfToken = filter_input(INPUT_POST, 'csrfToken');
+$csrfToken = filter_input(INPUT_POST, 'csrfToken', FILTER_SANITIZE_STRING);
 if (!isCsrfTokenValid($csrfToken)) {
     echo "CSRF attack";
     exit(1);

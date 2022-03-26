@@ -11,13 +11,13 @@ if (!isPostRequest()) {
     exit(1);
 }
 
-$csrfToken = filter_input(INPUT_POST, 'csrfToken');
+$csrfToken = filter_input(INPUT_POST, 'csrfToken', FILTER_SANITIZE_STRING);
 if (!isCsrfTokenValid($csrfToken)) {
     echo "CSRF attack";
     exit(1);
 }
 
-$buyerActivationOTP = filter_input(INPUT_POST, 'buyerActivationOTP');
+$buyerActivationOTP = filter_input(INPUT_POST, 'buyerActivationOTP', FILTER_SANITIZE_STRING);
 try {
     incrementSessionValue('buyerActivationAttempts');
 } catch (\Exception $e) {

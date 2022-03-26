@@ -11,13 +11,13 @@ if (!isPostRequest()) {
     exit(1);
 }
 
-$csrfToken = filter_input(INPUT_POST, 'csrfToken');
+$csrfToken = filter_input(INPUT_POST, 'csrfToken', FILTER_SANITIZE_STRING);
 if (!isCsrfTokenValid($csrfToken)) {
     echo "CSRF attack";
     exit(1);
 }
 
-$agencyLoginOTP = filter_input(INPUT_POST, 'agencyLoginOTP');
+$agencyLoginOTP = filter_input(INPUT_POST, 'agencyLoginOTP', FILTER_SANITIZE_STRING);
 try {
     incrementSessionValue('agency-loginAttempts');
 } catch (\Exception $e) {
