@@ -50,7 +50,7 @@ function addBuyerToQueue(string $telephone, string $agency): int
         list($agencyId, $queueLength) = findAgencyDetailsByDisplayName($agency);
 
         $dbh->beginTransaction();
-        $insertStmt = $dbh->prepare("INSERT INTO buyer VALUES (?, ?, ?, NULL)");
+        $insertStmt = $dbh->prepare("INSERT INTO buyer (telephone, agency_id, otp) VALUES (?, ?, ?)");
         $insertStmt->execute([$telephone, $agencyId, generateQueueOTP()]);
 
         $updateStmt = $dbh->prepare("UPDATE agency SET queue_length = queue_length + 1 WHERE id = ? ;");
@@ -63,4 +63,9 @@ function addBuyerToQueue(string $telephone, string $agency): int
         $dbh->rollBack();
         throw new \Exception("Failed to add {$telephone} to the queue of {$agency}.");
     }
+}
+
+function maskTelephoneNumber(string $telephone): string
+{
+    return substr($telephone, 0, 3) . 'XXXXX' . substr($telephone, strlen($telephone) - 2);
 }
