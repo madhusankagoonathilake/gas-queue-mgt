@@ -1,5 +1,7 @@
 <?php
 
+include_once '../common/session.php';
+
 function isPostRequest(): bool
 {
     $requestMethod = filter_input(INPUT_SERVER, 'REQUEST_METHOD');
@@ -14,11 +16,16 @@ function generateCsrfToken(string $sessionKey = 'csrfToken'): string
         $csrfToken = uniqid('_csrfToken');
     }
 
-    $_SESSION[$sessionKey] = $csrfToken;
+    setSessionValue($sessionKey, $csrfToken);
     return $csrfToken;
 }
 
 function isCsrfTokenValid(string $token, string $sessionKey = 'csrfToken'): bool
 {
-    return ($token === $_SESSION['csrfToken']);
+    try {
+        return ($token === getSessionValue($sessionKey));
+    } catch (\Exception $e) {
+        return false;
+    }
+
 }
