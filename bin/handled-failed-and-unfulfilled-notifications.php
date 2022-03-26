@@ -32,11 +32,12 @@ SELECT id, agency_id, telephone, status FROM buyer WHERE notified_on <= ? AND st
 
     $deleteStmt = $dbh->prepare("DELETE FROM buyer WHERE id = ?");
     $updateStmt = $dbh->prepare("UPDATE buyer SET status = ?, notified_on = ? WHERE id = ?");
-    $replacementStmt = $dbh->prepare("SELECT b.id, b.telephone, b.otp, a.name AS agency_name, a.city
+    $replacementStmt = $dbh->prepare("
+SELECT b.id, b.telephone, b.otp, a.name AS agency_name, a.city
 FROM buyer b 
 LEFT JOIN agency a on a.id = b.agency_id
 WHERE 
-      b.status = 'PENDING_NOTIFICATION' AND 
+      b.status = 'WAITING' AND 
       b.agency_id = ?
 LIMIT 1");
 
@@ -63,6 +64,10 @@ LIMIT 1");
 
         $replacementStmt->execute([$agencyId]);
         $replacement = $replacementStmt->fetch(\PDO::FETCH_NUM);
+
+        if (empty($replacement)) {
+            continue;
+        }
 
         list($replacementId, $replacementTelephone, $queueOTP, $agencyName, $city) = $replacement;
 
