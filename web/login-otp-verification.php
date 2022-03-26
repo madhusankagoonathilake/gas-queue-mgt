@@ -36,7 +36,7 @@ try {
 }
 
 if (isAgencyLoginOTPValid($agencyLoginOTP)) {
-    
+
     try {
         setSessionValues([
             'agency-name' => null,
@@ -82,7 +82,7 @@ include_once '../templates/header.php';
                 <div class="col">
                     <label for="agencyLoginOTP" class="my-1">ඔබ ඇතුලුකල දුරථනයට ලැබී ඇති SMS පණිවිඩයේ සඳහන් කේතය ඇතුළු
                         කරන්න.</label>
-                    <input type="text" maxlength="6" minlength="6" pattern="^\d{6}$"
+                    <input type="text" maxlength="6" minlength="6" pattern="^\d{6}$" required
                            class="form-control text-center" id="agencyLoginOTP" name="agencyLoginOTP"
                            placeholder="XXXXXX" autocomplete="off">
                 </div>

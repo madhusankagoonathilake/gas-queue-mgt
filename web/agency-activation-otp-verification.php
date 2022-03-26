@@ -106,7 +106,7 @@ include_once '../templates/header.php';
             <div class="row">
                 <div class="col">
                     <label for="agencyActivationOTP" class="my-1">කේතය</label>
-                    <input type="text" maxlength="6" minlength="6" pattern="^\d{6}$"
+                    <input type="text" maxlength="6" minlength="6" pattern="^\d{6}$" required
                            class="form-control text-center" id="agencyActivationOTP" name="agencyActivationOTP"
                            placeholder="XXXXXX" autocomplete="off">
                 </div>
