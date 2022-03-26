@@ -20,9 +20,8 @@ Queue Management Systems for LPG vendor agencies of Sri Lanka, for the LPG short
 1. Clone code from GitHub<br>
    `git clone https://github.com/madhusankagoonathilake/gas-queue-mgt.git`
 2. Move to the installation directory<br>
-   `cd gas-queue-mgt/install`
-3. Run the installation script. Enter necessary details when prompted.<br>
-   `php install.php`
+   `cd gas-queue-mgt/`
+3. Run `composer install`
 4. Set up scheduled tasks (cron jobs) to run the following command every 5 minutes & 4 hours respectively<br>
    `cd ${INSTALLATION_DIR}/bin && php send-notifications.php > /dev/null`<br>
    `cd ${INSTALLATION_DIR}/bin && php handled-failed-and-unfulfilled-notifications.php > /dev/null`
