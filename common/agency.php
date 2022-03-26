@@ -228,4 +228,16 @@ function issueBatch(int $agencyId, int $size): bool
     return $success;
 }
 
+function getBuyerStatusByQueueOTP(int $agencyId, string $otp): string
+{
+    try {
+        $stmt = getDbh()->prepare("SELECT status FROM buyer WHERE agency_id = ? AND otp = ?;");
+        $stmt->execute([$agencyId, $otp]);
+        return $stmt->fetch(\PDO::FETCH_COLUMN);
+    } catch (\Exception $e) {
+        app_log('EROR', $e->getMessage());
+        return 'ERROR';
+    }
+}
+
 

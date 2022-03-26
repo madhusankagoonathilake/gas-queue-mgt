@@ -45,11 +45,13 @@ LIMIT 1");
     foreach ($failedToNotifyBuyers as $buyer) {
         list($id, $agencyId, $telephone, $status) = $buyer;
 
-        $deleteStmt->execute([$id]);
-
         if ($status === 'NOTIFIED') {
             $maskedTelephoneNumber = maskTelephoneNumber($telephone);
             try {
+
+                $timestamp = date('Y-m-d H:i:s');
+                $updateStmt->execute(['EXPIRED', $timestamp, $id]);
+
                 $success = sendSMS($telephone, $expiredMessage);
                 if ($success) {
                     notification_log("Successfully sent the reject notice to {$maskedTelephoneNumber}");
@@ -60,6 +62,8 @@ LIMIT 1");
                 notification_log("Failed to send the sent the reject notice to {$maskedTelephoneNumber}");
             }
 
+        } elseif ($status = 'FAILED_TO_NOTIFY') {
+            $deleteStmt->execute([$id]);
         }
 
         $replacementStmt->execute([$agencyId]);
