@@ -6,6 +6,7 @@ include_once '../common/security.php';
 include_once '../common/session.php';
 include_once '../common/agency.php';
 include_once '../common/sms.php';
+include_once '../common/sms.php';
 
 if (!isPostRequest()) {
     echo "Invalid access";
@@ -38,7 +39,7 @@ if ($isTelephoneNumberInUse) {
         sendSMS($telephone, $agencyLoginOTPMessage);
         $success = true;
     } catch (\Exception $e) {
-        // TODO: Log error
+        app_log('EROR', $e->getMessage());
     }
 
 }

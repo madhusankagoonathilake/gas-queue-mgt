@@ -6,6 +6,7 @@ include_once '../common/security.php';
 include_once '../common/session.php';
 include_once '../common/agency.php';
 include_once '../common/sms.php';
+include_once '../common/logger.php';
 
 if (isLoggedIn()) {
     header('Location: /agency-dashboard.php');
@@ -47,7 +48,7 @@ if (!$agencyExists && !$isTelephoneNumberInUse) {
         sendSMS($telephone, $agencyActivationMessage);
         $success = true;
     } catch (\Exception $e) {
-        // TODO: Log error
+        app_log('EROR', $e->getMessage());
     }
 
 }

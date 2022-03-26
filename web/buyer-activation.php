@@ -6,6 +6,7 @@ include_once '../common/security.php';
 include_once '../common/session.php';
 include_once '../common/buyer.php';
 include_once '../common/sms.php';
+include_once '../common/sms.php';
 
 if (!isPostRequest()) {
     echo "Invalid access";
@@ -43,7 +44,7 @@ if ($agencyExists) {
             sendSMS($telephone, $buyerActivationMessage);
             $success = true;
         } catch (\Exception $e) {
-            // TODO: Log errors
+            app_log('EROR', $e->getMessage());
         }
     }
 }
