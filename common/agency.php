@@ -1,6 +1,7 @@
 <?php
 
 require_once '../common/dbh.php';
+require_once '../common/logger.php';
 
 function getAgencyList(): array
 {
@@ -192,3 +193,39 @@ function generateQueueGraphic($queueLength, $currentBatchSize, $issuedAmount): s
 
     return str_replace(array_keys($replacements), array_values($replacements), $html);
 }
+
+function issueBatch(int $agencyId, int $size): bool
+{
+    $success = false;
+
+    $dbh = getDbh();
+    try {
+
+        $dbh->beginTransaction();
+
+        $buyerListStmt = $dbh->prepare("SELECT id FROM buyer WHERE agency_id = ? LIMIT {$size} ");
+        $buyerListStmt->execute([$agencyId]);
+        $buyerIdList = $buyerListStmt->fetchAll(\PDO::FETCH_COLUMN);
+
+        // Being extra safe, rather than running a direct UPDATE with a LIMIT $size
+        $buyerUpdateStmt = $dbh->prepare("UPDATE buyer SET status = 'PENDING_NOTIFICATION' WHERE id = ?");
+        foreach ($buyerIdList as $buyerId) {
+            $buyerUpdateStmt->execute([$buyerId]);
+        }
+
+        $agencyQueueStatsUpdateStmt = $dbh->prepare("UPDATE agency SET current_batch_size = ?, available_amount = ? WHERE id = ?");
+        $agencyQueueStatsUpdateStmt->execute([$size, $size, $agencyId]);
+
+        $dbh->commit();
+
+        $success = true;
+
+    } catch (\Exception $e) {
+        $dbh->rollBack();
+        app_log('ER0R', $e->getMessage());
+    }
+
+    return $success;
+}
+
+
