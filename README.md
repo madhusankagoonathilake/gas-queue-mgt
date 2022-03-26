@@ -33,6 +33,7 @@ Queue Management Systems for LPG vendor agencies of Sri Lanka, for the LPG short
 * Reduce session timeout from the default PHP value
 * Implement async SMS notifications or queued SMS notifications for issuing of gas cylinder batches 
 * Implement IP & session level restriction to malicious activity
+* Document [test cases](docs/TEST-CASES.md)
 
 ## Design Decisions
 
