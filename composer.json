@@ -18,5 +18,12 @@
     "psr-4": {
       "GasQueueMgt\\": "src/GasQueueMgt/"
     }
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "php -r \"if (!is_dir('./logs')) mkdir('./logs/');\"",
+      "php -r \"touch('./logs/app.log');\"",
+      "php -r \"touch('./logs/notification.log');\""
+    ]
   }
 }
