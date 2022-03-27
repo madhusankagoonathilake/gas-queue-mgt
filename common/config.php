@@ -16,5 +16,6 @@ const CONFIG = [
         'mask' => 'FastSMS',
         'baseUri' => 'https://fastsms.lk',
         'apiKey' => '1234',
+        'prod' => false,
     ],
 ];
