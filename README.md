@@ -16,7 +16,7 @@ Queue Management Systems for LPG vendor agencies of Sri Lanka, for the LPG short
 * The configuration parameters in `common/config.php` needs to be changed accordingly.
 
 ### Steps
-
+<span style="color: red">[INCOMPLETE]</span>
 1. Clone code from GitHub<br>
    `git clone https://github.com/madhusankagoonathilake/gas-queue-mgt.git`
 2. Move to the installation directory<br>
