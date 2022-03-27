@@ -53,9 +53,6 @@ function addBuyerToQueue(string $telephone, string $agency): int
         $insertStmt = $dbh->prepare("INSERT INTO buyer (telephone, agency_id, otp) VALUES (?, ?, ?)");
         $insertStmt->execute([$telephone, $agencyId, generateQueueOTP()]);
 
-        $updateStmt = $dbh->prepare("UPDATE agency SET queue_length = queue_length + 1 WHERE id = ? ;");
-        $updateStmt->execute([$agencyId]);
-
         $dbh->commit();
 
         return $queueLength + 1;

@@ -60,7 +60,7 @@ include_once '../templates/header.php';
             </div>
 
             <div class="col m-2 align-content-end">
-                <button class="btn btn-success" onclick="location.href = 'agency-verify-queue.php';"
+                <button class="btn btn-success" onclick="location.href = 'agency-validate-buyer.php';"
                         <?php if ($availablePercentage == 0): ?>disabled<?php endif; ?>>
                     අළෙවිකිරීම්
                 </button>

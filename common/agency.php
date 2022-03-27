@@ -12,7 +12,7 @@ function getAgencyList(): array
 
 function findAgencyDetailsByDisplayName(string $displayName): array
 {
-    $stmt = getDbh()->prepare("SELECT id, queue_length FROM agency WHERE name = ? AND city = ?");
+    $stmt = getDbh()->prepare("SELECT id, queue_length(id) FROM agency WHERE name = ? AND city = ?");
     $stmt->execute(explode(' - ', $displayName));
     return $stmt->fetch(\PDO::FETCH_NUM);
 }
@@ -99,7 +99,7 @@ function isAgencyLoginOTPValid($agencyLoginOTP): bool
 function findAgencyDetailsById($id): array
 {
     try {
-        $stmt = getDbh()->prepare("SELECT name, city, queue_length, current_batch_size, available_amount, issued_amount FROM agency WHERE id = ?");
+        $stmt = getDbh()->prepare("SELECT name, city, queue_length(id), current_batch_size, available_amount, issued_amount FROM agency WHERE id = ?");
         $stmt->execute([$id]);
         return $stmt->fetch(\PDO::FETCH_NUM);
     } catch (\Exception $e) {
@@ -151,7 +151,7 @@ function generateQueueGraphic($queueLength, $currentBatchSize, $issuedAmount): s
     $dimension = 42;
     $scale = 0.8;
 
-    $displayQueueLength = $queueLength;
+    $displayQueueLength = $queueLength + $issuedAmount;
     if ($queueLength > 100) {
         $displayQueueLength = 100;
         $currentBatchSize = floor(($currentBatchSize / $queueLength) * 100);
@@ -213,7 +213,7 @@ function issueBatch(int $agencyId, int $size): bool
             $buyerUpdateStmt->execute([$buyerId]);
         }
 
-        $agencyQueueStatsUpdateStmt = $dbh->prepare("UPDATE agency SET current_batch_size = ?, available_amount = ? WHERE id = ?");
+        $agencyQueueStatsUpdateStmt = $dbh->prepare("UPDATE agency SET current_batch_size = ?, available_amount = ?, issued_amount = 0 WHERE id = ?");
         $agencyQueueStatsUpdateStmt->execute([$size, $size, $agencyId]);
 
         $dbh->commit();
@@ -237,6 +237,34 @@ function getBuyerStatusByQueueOTP(int $agencyId, string $otp): string
     } catch (\Exception $e) {
         app_log('EROR', $e->getMessage());
         return 'ERROR';
+    }
+}
+
+function confirmPurchase(int $agencyId, string $otp): bool
+{
+    $dbh = getDbh();
+    try {
+
+        $dbh->beginTransaction();
+
+        $deleteStmt = $dbh->prepare("DELETE FROM buyer WHERE agency_id = ? AND otp = ? AND status = 'NOTIFIED';");
+        $updateStmt = $dbh->prepare("UPDATE agency 
+SET
+    issued_amount = issued_amount + 1, 
+    available_amount = available_amount - 1 
+WHERE id = ?");
+
+        $deleteStmt->execute([$agencyId, $otp]);
+        $updateStmt->execute([$agencyId]);
+
+        $dbh->commit();
+
+        return true;
+
+    } catch (\Exception $e) {
+        $dbh->rollBack();
+        app_log('EROR', $e->getMessage());
+        return false;
     }
 }
 

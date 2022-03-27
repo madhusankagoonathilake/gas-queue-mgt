@@ -59,10 +59,10 @@ include_once '../templates/header.php';
 
         </form>
     <?php else: ?>
-        <div class="row">
-            <div class="col-12 my-3">
-                <label for="range" class="my-2">ඔබගේ පොරොත්තු ලයිස්තුව හිස් බැවින් දැනට ගෑස් සිලින්ඩර නිකුත් කිරීම
-                    අවශ්‍ය නොවේ.</label>
+        <div class="row alert bg-success">
+            <div class="col">
+                ඔබගේ පොරොත්තු ලයිස්තුව හිස් බැවින් දැනට ගෑස් සිලින්ඩර නිකුත් කිරීම
+                    අවශ්‍ය නොවේ.
             </div>
         </div>
     <?php endif; ?>
