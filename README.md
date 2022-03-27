@@ -14,6 +14,7 @@ Queue Management Systems for LPG vendor agencies of Sri Lanka, for the LPG short
 * By default, the system uses [FastSMS (Sri Lanka)](https://fastsms.lk/) service.
 * If the service needs to be changed, `sendSMS()` function in `common/sms.php` needs to be changed.
 * The configuration parameters in `common/config.php` needs to be changed accordingly.
+* The configuration parameters in `common/config.php` sms=>prod has been set to false this will provide UI to view the SMS via /api/v1/send?phone_number=07xxxxxxxx format url 
 
 ### Steps
 <span style="color: red">[INCOMPLETE]</span>
