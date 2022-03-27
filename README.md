@@ -39,6 +39,9 @@ Queue Management Systems for LPG vendor agencies of Sri Lanka, for the LPG short
 * Implement the removal of expired queue entries older than 2 weeks 
 * Automated bug reporting facility
 
+# (Not-so-Near) Future Improvements
+* Using Location Based Services, automatically select the nearest agency for the buyer (by [Hansaka Weerasingha](https://twitter.com/wphansaka))
+
 ## Design Decisions
 
 Following decisions were taken to reduce the time to deliver, wider understanding and minimize overheads
