@@ -36,6 +36,7 @@ Queue Management Systems for LPG vendor agencies of Sri Lanka, for the LPG short
 * Reduce session timeout from the default PHP value 
 * Implement IP & session level restriction to malicious activity
 * Complete the documentation of [test cases](docs/TEST-CASES.md)
+* Implement the removal of expired queue entries older than 2 weeks 
 * Automated bug reporting facility
 
 ## Design Decisions
