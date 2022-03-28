@@ -8,26 +8,32 @@ if (isLoggedIn()) {
     header('Location: /agency-dashboard.php');
 }
 
-try {
-    getSessionValue('language');    
-} catch (\Throwable $th) {
-    if (isset($_COOKIE['language']) && strlen($_COOKIE['language']) == '2') {
-        setSessionValues(['language', $_COOKIE['language']]);
+if (isset($_COOKIE['language'])) {
+    if (strlen($_COOKIE['language']) == 2) {
+        if ($_COOKIE['language'] == 'si') {
+            setSessionValues(['language' => 'si']);
+        } else if ($_COOKIE['language'] == 'en') {
+            setSessionValues(['language' => 'en']);
+        }  else if ($_COOKIE['language'] == 'ta') {
+            setSessionValues(['language' => 'ta']);
+        } else {
+            setSessionValues(['language' => 'si']);
+        }
     } else {
-        setSessionValues(['language', 'si']);
+        setSessionValues(['language' => 'si']);
     }
 }
 
 if (isset($_POST['language'])) {
     if ($_POST['language'] == 'si') {
         setcookie('language', 'si', time() + (86400 * 30), "/");
-        setSessionValues(['language', 'si']);
+        setSessionValues(['language' => 'si']);
     } else if ($_POST['language'] == 'en') {
         setcookie('language', 'en', time() + (86400 * 30), "/");
-        setSessionValues(['language', 'en']);
+        setSessionValues(['language' => 'en']);
     } else if ($_POST['language'] == 'ta') {
         setcookie('language', 'ta', time() + (86400 * 30), "/");
-        setSessionValues(['language', 'ta']);
+        setSessionValues(['language' => 'ta']);
     }
 }  
 
