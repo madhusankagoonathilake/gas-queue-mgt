@@ -8,34 +8,11 @@ if (isLoggedIn()) {
     header('Location: /agency-dashboard.php');
 }
 
-if (isset($_COOKIE['language'])) {
-    if (strlen($_COOKIE['language']) == 2) {
-        if ($_COOKIE['language'] == 'si') {
-            setSessionValues(['language' => 'si']);
-        } else if ($_COOKIE['language'] == 'en') {
-            setSessionValues(['language' => 'en']);
-        }  else if ($_COOKIE['language'] == 'ta') {
-            setSessionValues(['language' => 'ta']);
-        } else {
-            setSessionValues(['language' => 'si']);
-        }
-    } else {
-        setSessionValues(['language' => 'si']);
-    }
-}
+$line0 = "";
+$line1 = "";
+$line2 = "";
 
-if (isset($_POST['language'])) {
-    if ($_POST['language'] == 'si') {
-        setcookie('language', 'si', time() + (86400 * 30), "/");
-        setSessionValues(['language' => 'si']);
-    } else if ($_POST['language'] == 'en') {
-        setcookie('language', 'en', time() + (86400 * 30), "/");
-        setSessionValues(['language' => 'en']);
-    } else if ($_POST['language'] == 'ta') {
-        setcookie('language', 'ta', time() + (86400 * 30), "/");
-        setSessionValues(['language' => 'ta']);
-    }
-}  
+echo getSessionValue('language');
 
 if (getSessionValue('language') == 'si') {
     $line0 = "මම";
