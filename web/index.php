@@ -12,13 +12,15 @@ $line0 = "";
 $line1 = "";
 $line2 = "";
 
-echo getSessionValue('language');
+if (isset($_POST['language'])) {
+    setLanguage($_POST['language']);
+}
 
-if (getSessionValue('language') == 'si') {
+if (getLanguage('language') == 'si') {
     $line0 = "මම";
     $line1 = "ඒජන්සි හිමියෙක්මි";
     $line2 = "ගනුම්කරුවෙක්මි";
-} else if (getSessionValue('language') == 'en') {
+} else if (getLanguage('language') == 'en') {
     $line0 = "I an";
     $line1 = "Agency Owner";
     $line2 = "Buyer";
