@@ -21,7 +21,7 @@ if (getLanguage('language') == 'si') {
     $line1 = "ඒජන්සි හිමියෙක්මි";
     $line2 = "ගනුම්කරුවෙක්මි";
 } else if (getLanguage('language') == 'en') {
-    $line0 = "I an";
+    $line0 = "I am";
     $line1 = "Agency Owner";
     $line2 = "Buyer";
 }
