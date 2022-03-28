@@ -8,15 +8,13 @@ if (isLoggedIn()) {
     header('Location: /agency-dashboard.php');
 }
 
-if (getSessionValue('language') == null) {
-    if (!isset($_COOKIE['language'])) {
-        setSessionValues(['language', 'si']);
+try {
+    getSessionValue('language');    
+} catch (\Throwable $th) {
+    if (isset($_COOKIE['language']) && strlen($_COOKIE['language']) == '2') {
+        setSessionValues(['language', $_COOKIE['language']]);
     } else {
-        if (strlen($_COOKIE['language']) == 2) {
-            setSessionValues(['language', $_COOKIE['language']]);
-        } else {
-            setSessionValues(['language', 'si']);
-        }
+        setSessionValues(['language', 'si']);
     }
 }
 
