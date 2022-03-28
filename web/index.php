@@ -36,8 +36,9 @@ include_once '../templates/header.php';
         <a href="agency.php" class="btn btn-lg btn-secondary fw-bold border-primary bg-primary text-white m-3"><?php echo $line1; ?></a>
         <a href="buyer.php" class="btn btn-lg btn-secondary fw-bold border-success bg-success text-white m-3"><?php echo $line2; ?></a>
     </p>
-    <div class="mt-3">
-        <h4>කරුණාකර ඔබගේ භාෂාව තෝරන්න | Please select your language</h4>
+    <div class="mt-4">
+        <h4>කරුණාකර ඔබගේ භාෂාව තෝරන්න</h4>
+        <h5>Please select your language</h5>
         <form action="./" method="post">
             <label for="language">භාෂාව | Language</label>
             <select name="language" id="language" class="form-select">
