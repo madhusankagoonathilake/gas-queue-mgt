@@ -14,16 +14,22 @@ if ($_POST['language']) {
     } else if ($_POST['language'] == 'en') {
         setcookie('language', 'en', time() + (86400 * 30), "/");
     }
+    $_SESSION['language'] = $_POST['language'];
 }
 
 if (!isset($_COOKIE['language'])) {
     setcookie('language', 'si', time() + (86400 * 30), "/");
+    $_SESSION['language'] = 'si';
+} else if(strlen($_COOKIE['language']) != 2) {
+    $_SESSION['lanaguage'] = 'si';
+} else {
+    $_SESSION['language'] = $_COOKIE['language'];
 }
 
-if (isset($_COOKIE['language']) && $_COOKIE['language'] == 'si') {
+if (isset($_SESSION['language']) && $_SESSION['language'] == 'si') {
     $line1 = "ඒජන්සි හිමියෙක්මි";
     $line2 = "ගනුම්කරුවෙක්මි";
-} else if (isset($_COOKIE['language']) && $_COOKIE['language'] == 'en') {
+} else if (isset($_SESSION['language']) && $_SESSION['language'] == 'en') {
     $line1 = "Agency Owner";
     $line2 = "Buyer";
 }
