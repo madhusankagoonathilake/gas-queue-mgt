@@ -36,17 +36,19 @@ include_once '../templates/header.php';
     <p class="lead">&nbsp;</p>
     <p class="lead">
         <a href="agency.php" class="btn btn-lg btn-secondary fw-bold border-primary bg-primary text-white m-3"><?php echo $line1; ?></a>
-        <a href="buyer.php" class="btn btn-lg btn-secondary fw-bold border-success bg-success text-white m-3"></a>
-    </p>   
-    <h2>කරුණාකර ඔබගේ භාෂාව තෝරන්න | Please select your language</h2>
-    <form action="/" method="post">
-        <label for="language">භාෂාව | Language</label>
-        <select name="language" id="language" class="form-select">
-            <option value="si">සිංහල | Sinhala</option>
-            <option value="en">ඉංග්‍රීසි | English</option>
-        </select>
-        <button type="submit" class="btn btn-success">භාෂාව තෝරන්න | Select Language</button>
-    </form>
+        <a href="buyer.php" class="btn btn-lg btn-secondary fw-bold border-success bg-success text-white m-3"><?php echo $line2; ?></a>
+    </p>
+    <div class="mt-3">
+        <h4>කරුණාකර ඔබගේ භාෂාව තෝරන්න | Please select your language</h4>
+        <form action="./" method="post">
+            <label for="language">භාෂාව | Language</label>
+            <select name="language" id="language" class="form-select">
+                <option value="si">සිංහල | Sinhala</option>
+                <option value="en">ඉංග්‍රීසි | English</option>
+            </select>
+            <button type="submit" class="btn btn-success">භාෂාව තෝරන්න | Select Language</button>
+        </form>
+    </div>   
 </main>
 
 <?php include_once '../templates/footer.php' ?>
