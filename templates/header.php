@@ -1,3 +1,14 @@
+<?php 
+    session_start();
+
+    include_once '../common/session.php';
+    
+    if (isset($_COOKIE['language'])) {
+        setSessionValues(array('language' => $_COOKIE['languae']));
+    } else {
+        setSessionValues(array('language' => 'si'));
+    }
+?> 
 <!doctype html>
 <html lang="en" class="h-100">
 <head>
