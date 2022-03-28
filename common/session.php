@@ -75,4 +75,6 @@ function setLanguage($lang) {
         setSessionValues(array('laguage' => 'si'));
         setcookie('language', 'si', time() + (86400 * 30), "/");
     }
+
+    header("Location: ". $_SERVER['PHP_SELF']);
 }
